@@ -1,0 +1,13 @@
+build:
+  type: docker
+  properties:
+    container-name: extensions/shopify-multi-js
+    container-tag: latest
+deploy:
+  type: container-deploy
+  properties:
+    endpoint-prefix: shopify-multi-js
+    endpoint-accessibility: public
+multitenantConfigKeys:
+  - shopify.token
+  - shopify.store.name
