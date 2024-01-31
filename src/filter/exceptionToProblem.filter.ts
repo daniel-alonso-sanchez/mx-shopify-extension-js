@@ -36,13 +36,13 @@ export class ExceptionToProblemFilter implements ExceptionFilter {
         }
       }
     }
-    const span = trace.getSpan(context.active());
+    const span = trace ? trace.getSpan(context.active()) : undefined;
     response.status(status).json({
       status: status,
       type: 'about:blank',
       title: title,
-      trace_id: span.spanContext().traceId,
-      span_id: span.spanContext().spanId,
+      trace_id: span ? span.spanContext().traceId : '',
+      span_id: span ? span.spanContext().spanId : '',
       detail: detail,
       path: request.url,
     });

@@ -34,7 +34,10 @@ export class ClientExceptionInterceptor implements NestInterceptor {
           if (status === 401) {
             return throwError(
               () =>
-                new NotAuthorizedException('Not found', error.response.data),
+                new NotAuthorizedException(
+                  'Not authorized',
+                  error.response.data,
+                ),
             );
           }
         }

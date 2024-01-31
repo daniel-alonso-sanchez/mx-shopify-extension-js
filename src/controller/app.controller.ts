@@ -12,7 +12,6 @@ export class AppController {
   async getItems(
     @Headers('subscription-id') subscriptionId: string,
   ): Promise<ProductsResponse> {
-    this.logger.log("aaa");
     return this.appService.getItems(subscriptionId);
   }
   @Get('/items/:id')
