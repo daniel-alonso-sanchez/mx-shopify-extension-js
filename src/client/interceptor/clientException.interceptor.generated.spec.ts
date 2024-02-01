@@ -7,6 +7,41 @@ import { NotFoundException } from '../../exception/notFoundException';
 import { NotAuthorizedException } from '../../exception/notAuthorizedException';
 import { ExtensionException } from '../../exception/extensionException';
 
+function createTest(
+  status: number,
+  exceptionType: any,
+  exceptionTitle: string,
+  exceptionDetail: string,
+) {
+  return (done: () => void) => {
+    const mockError = {
+      response: {
+        status,
+        data: 'some data',
+      },
+    };
+
+    const handler = {
+      handle: () => throwError(() => mockError),
+    };
+
+    const interceptor = new ClientExceptionInterceptor();
+    const obs = interceptor.intercept(null, handler as any) as Observable<any>;
+
+    obs
+      .pipe(
+        catchError((error) => {
+          expect(error instanceof exceptionType).toBe(true);
+          expect(error.title).toBe(exceptionTitle);
+          expect(error.detail).toBe(exceptionDetail);
+          done();
+          return of(null);
+        }),
+      )
+      .subscribe();
+  };
+}
+
 describe('ClientExceptionInterceptor', () => {
   let interceptor: ClientExceptionInterceptor;
 
@@ -24,111 +59,20 @@ describe('ClientExceptionInterceptor', () => {
     expect(interceptor).toBeDefined();
   });
 
-  it('should handle 400 error and throw NotValidException', (done) => {
-    const mockError = {
-      response: {
-        status: 400,
-        data: 'some data',
-      },
-    };
-
-    const handler = {
-      handle: () => throwError(() => mockError),
-    };
-
-    const obs = interceptor.intercept(null, handler as any) as Observable<any>;
-
-    obs
-      .pipe(
-        catchError((error) => {
-          expect(error instanceof NotValidException).toBe(true);
-          expect(error.title).toBe('Not valid');
-          expect(error.detail).toBe('some data');
-          done();
-          return of(null);
-        }),
-      )
-      .subscribe();
-  });
-
-  it('should handle 404 error and throw NotFoundException', (done) => {
-    const mockError = {
-      response: {
-        status: 404,
-        data: 'some data',
-      },
-    };
-
-    const handler = {
-      handle: () => throwError(() => mockError),
-    };
-
-    const obs = interceptor.intercept(null, handler as any) as Observable<any>;
-
-    obs
-      .pipe(
-        catchError((error) => {
-          expect(error instanceof NotFoundException).toBe(true);
-          expect(error.title).toBe('Not found');
-          expect(error.detail).toBe('some data');
-          done();
-          return of(null);
-        }),
-      )
-      .subscribe();
-  });
-
-  it('should handle 401 error and throw NotAuthorized', (done) => {
-    const mockError = {
-      response: {
-        status: 401,
-        data: 'some data',
-      },
-    };
-
-    const handler = {
-      handle: () => throwError(() => mockError),
-    };
-
-    const obs = interceptor.intercept(null, handler as any) as Observable<any>;
-
-    obs
-      .pipe(
-        catchError((error) => {
-          expect(error instanceof NotAuthorizedException).toBe(true);
-          expect(error.title).toBe('Not authorized');
-          expect(error.detail).toBe('some data');
-          done();
-          return of(null);
-        }),
-      )
-      .subscribe();
-  });
-
-  it('should handle 500 error and throw ExtensionException', (done) => {
-    const mockError = {
-      response: {
-        status: 500,
-        data: 'some data',
-      },
-    };
-
-    const handler = {
-      handle: () => throwError(() => mockError),
-    };
-
-    const obs = interceptor.intercept(null, handler as any) as Observable<any>;
-
-    obs
-      .pipe(
-        catchError((error) => {
-          expect(error instanceof ExtensionException).toBe(true);
-          expect(error.title).toBe('Unknown error');
-          expect(error.detail).toBe('some data');
-          done();
-          return of(null);
-        }),
-      )
-      .subscribe();
-  });
+  it(
+    'should handle 400 error and throw NotValidException',
+    createTest(400, NotValidException, 'Not valid', 'some data'),
+  );
+  it(
+    'should handle 404 error and throw NotFoundException',
+    createTest(404, NotFoundException, 'Not found', 'some data'),
+  );
+  it(
+    'should handle 401 error and throw NotAuthorizedException',
+    createTest(401, NotAuthorizedException, 'Not authorized', 'some data'),
+  );
+  it(
+    'should handle 500 error and throw ExtensionException',
+    createTest(500, ExtensionException, 'Unknown error', 'some data'),
+  );
 });
