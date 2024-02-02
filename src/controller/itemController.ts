@@ -3,18 +3,18 @@ import { AppService } from '../service/app.service';
 import { ProductResponse } from '../client/shopify/model/productResponse';
 import { ProductsResponse } from '../client/shopify/model/productsResponse';
 
-@Controller()
-export class AppController {
-  private readonly logger = new Logger(AppController.name);
+@Controller('/items')
+export class ItemController {
+  private readonly logger = new Logger(ItemController.name);
   constructor(private readonly appService: AppService) {}
 
-  @Get('/items')
+  @Get('/')
   async getItems(
     @Headers('subscription-id') subscriptionId: string,
   ): Promise<ProductsResponse> {
     return this.appService.getItems(subscriptionId);
   }
-  @Get('/items/:id')
+  @Get('/:id')
   async getItem(
     @Param('id') id: string,
     @Headers('subscription-id') subscriptionId: string,

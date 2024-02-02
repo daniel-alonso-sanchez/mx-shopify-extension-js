@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './controller/app.controller';
+import { ItemController } from './controller/itemController';
 import { AppService } from './service/app.service';
 import { HttpModule } from '@nestjs/axios';
 import { SecretsClientService } from './client/secrets/secrets-client.service';
@@ -8,12 +8,15 @@ import { ShopifyClientService } from './client/shopify/service/shopify-client.se
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { ClientExceptionInterceptor } from './client/interceptor/clientException.interceptor';
 import { ExceptionToProblemFilter } from './filter/exceptionToProblem.filter';
+import { SchematicService } from './service/schematic.service';
+import { SchematicController } from './controller/schematicController';
 
 @Module({
   imports: [HttpModule, ConfigModule.forRoot()],
-  controllers: [AppController],
+  controllers: [ItemController, SchematicController],
   providers: [
     AppService,
+    SchematicService,
     SecretsClientService,
     ShopifyClientService,
     {

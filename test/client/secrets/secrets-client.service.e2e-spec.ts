@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { SecretsClientService } from '../../../src/client/secrets/secrets-client.service';
 import { HttpModule } from '@nestjs/axios';
 import { ConfigModule } from '@nestjs/config';
-import * as nock from 'nock'; // Import nock using '* as nock'
+import * as nock from 'nock';
 
 describe('SecretsClientService', () => {
   let secretsClientService: SecretsClientService;
