@@ -20,11 +20,11 @@ function parseJsonFile(assetPath: string) {
 }
 
 const productsResponse = parseJsonFile(
-  './test/assets/product-response.json',
+  './test/public/product-response.json',
 ) as ProductsResponse;
 
 const productResponse = parseJsonFile(
-  './test/assets/product-response.json',
+  './test/public/product-response.json',
 ) as ProductResponse;
 
 describe('ShopifyClientService', () => {

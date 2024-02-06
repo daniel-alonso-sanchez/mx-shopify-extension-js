@@ -10,9 +10,21 @@ import { ClientExceptionInterceptor } from './client/interceptor/clientException
 import { ExceptionToProblemFilter } from './filter/exceptionToProblem.filter';
 import { SchematicService } from './service/schematic.service';
 import { SchematicController } from './controller/schematicController';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import path from 'path';
 
+const ruta = path.join(__dirname, '..', 'dist/public');
+
+console.log('La ruta real es: ' + ruta);
 @Module({
-  imports: [HttpModule, ConfigModule.forRoot()],
+  imports: [
+    HttpModule,
+    ConfigModule.forRoot(),
+    ServeStaticModule.forRoot({
+      rootPath: ruta,
+      exclude: ['/api/(.*)'],
+    }),
+  ],
   controllers: [ItemController, SchematicController],
   providers: [
     AppService,
