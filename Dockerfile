@@ -31,7 +31,7 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/backend/package*.json ./
 COPY --from=builder /usr/src/app/backend/node_modules/ ./node_modules/
 COPY --from=builder /usr/src/app/backend/dist/ ./dist/
-COPY --from=builder /usr/src/app/backend/.env ./dist/
+COPY --from=builder /usr/src/app/backend/.env ./
 COPY --from=builder /usr/src/app/backend/public/ ./dist/public/
 
 # Expose the web server's port.
