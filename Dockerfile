@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 # Copy the package.json into the container.
 COPY package*.json ./
-
+COPY backend/.env ./backend/
 COPY backend/package*.json ./backend/
 COPY frontend/package*.json ./frontend/
 
@@ -31,6 +31,7 @@ WORKDIR /usr/src/app
 COPY --from=builder /usr/src/app/backend/package*.json ./
 COPY --from=builder /usr/src/app/backend/node_modules/ ./node_modules/
 COPY --from=builder /usr/src/app/backend/dist/ ./dist/
+COPY --from=builder /usr/src/app/backend/.env ./dist/
 COPY --from=builder /usr/src/app/backend/public/ ./dist/public/
 
 # Expose the web server's port.
