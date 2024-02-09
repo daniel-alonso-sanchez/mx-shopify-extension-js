@@ -15,7 +15,6 @@ import path from 'path';
 
 const ruta = path.join(__dirname, '..', 'dist/public');
 
-console.log('La ruta real es: ' + ruta);
 @Module({
   imports: [
     HttpModule,

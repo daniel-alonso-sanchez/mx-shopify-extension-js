@@ -6,6 +6,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
+import { Grid } from '@mui/material';
+import SubscriptionManagement from './SubscriptionManagement.jsx';
+import * as React from 'react';
+
 function ProductsGrid() {
   const [rows, setRows] = useState([]);
   const [setSelectedItemId] = useState(null);
@@ -66,39 +72,48 @@ function ProductsGrid() {
   }
 
   return (
-    <div style={{ width: '100%' }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        pageSize={5}
-        rowsPerPageOptions={[5, 10, 20]}
-        disableSelectionOnClick
-        onRowClick={handleRowClick}
-      />
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Item Details</DialogTitle>
-        <DialogContent>
-          {selectedItem && (
-            <div>
-              <Typography>ID: {selectedItem.id}</Typography>
-              <Typography>Title: {selectedItem.title}</Typography>
-              <Typography>Product Type: {selectedItem.productType}</Typography>
-              <Typography>Updated At: {selectedItem.updatedAt}</Typography>
-              <Typography>Tags: {selectedItem.tags}</Typography>
-              <Typography>Status: {selectedItem.status}</Typography>
-              {selectedItem.image && (
-                <img src={selectedItem.image.src} alt="Item Image" style={{ maxWidth: '100%', marginTop: 10 }} />
-              )}
+    <Container>
+      <Box sx={{ my: 4 }}>
+        <Grid container alignItems="flex-start" justifyContent="flex-end">
+          <Grid item>
+            <div style={{ width: '100%' }}>
+              <DataGrid
+                rows={rows}
+                columns={columns}
+                pageSize={5}
+                rowsPerPageOptions={[5, 10, 20]}
+                disableSelectionOnClick
+                onRowClick={handleRowClick}
+              />
+              <Dialog open={openDialog} onClose={handleCloseDialog}>
+                <DialogTitle>Item Details</DialogTitle>
+                <DialogContent>
+                  {selectedItem && (
+                    <div>
+                      <Typography>ID: {selectedItem.id}</Typography>
+                      <Typography>Title: {selectedItem.title}</Typography>
+                      <Typography>Product Type: {selectedItem.productType}</Typography>
+                      <Typography>Updated At: {selectedItem.updatedAt}</Typography>
+                      <Typography>Tags: {selectedItem.tags}</Typography>
+                      <Typography>Status: {selectedItem.status}</Typography>
+                      {selectedItem.image && (
+                        <img src={selectedItem.image.src} alt="Item Image"
+                             style={{ maxWidth: '100%', marginTop: 10 }} />
+                      )}
+                    </div>
+                  )}
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseDialog} color="primary">
+                    Close
+                  </Button>
+                </DialogActions>
+              </Dialog>
             </div>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 }
 
