@@ -9,12 +9,11 @@ import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Grid } from '@mui/material';
-import SubscriptionManagement from './SubscriptionManagement.jsx';
 import * as React from 'react';
 
 function ProductsGrid() {
   const [rows, setRows] = useState([]);
-  const [setSelectedItemId] = useState(null);
+  const [selectedItemId, setSelectedItemId] = useState(null);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [error, setError] = useState(null);
