@@ -4,14 +4,44 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
+
+
 function ProductSelect() {
   const [products, setProducts] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState('');
   const [loadingError, setLoadingError] = useState(false);
+  const [correlationId, setCorrelationId] = useState(null);
+  const [productIdFromEvent, setProductIdFromEvent] = useState(null);
+
 
   useEffect(() => {
+    window.addEventListener("message", async (event) => {
+      if (event.data.action === 'init') {
+        onInit(event.data);
+      }
+    })
     fetchData();
+
   }, []);
+
+  function onInit(data){
+    console.log (`CorrelationId: ${data.correlationId}`)
+    const productIdToSelect = parseInt(data?.state?.currentNode?.properties?.productId, 10);
+
+    setCorrelationId(data.correlationId);
+    setProductIdFromEvent(productIdToSelect);
+  }
+  function sendImageUrlToParent (){
+
+    console.log(`product id: ${selectedProductId}`);
+    parent.window.postMessage({
+      action: 'changeFormFieldValue',
+      correlationId: correlationId,
+      value: selectedProductId.toString(),
+      fieldName: 'productId'
+    }, '*');
+  }
+
 
   const fetchData = async () => {
     try {
@@ -38,6 +68,18 @@ function ProductSelect() {
     setSelectedProductId(event.target.value);
   };
 
+  useEffect(() => {
+    if (productIdFromEvent && products.length > 0) {
+      setSelectedProductId(productIdFromEvent.toString());
+    }
+  }, [productIdFromEvent, products]);
+
+  useEffect(() => {
+    if (selectedProductId !== '' && products.length > 0) {
+      sendImageUrlToParent();
+    }
+  }, [selectedProductId, products]);
+
   if (loadingError) {
     return <Typography>Error loading data</Typography>;
   }
@@ -59,12 +101,6 @@ function ProductSelect() {
           </MenuItem>
         ))}
       </Select>
-      {selectedProductId && (
-        <Box mt={2}>
-          <Typography variant="h6">Selected Product Image:</Typography>
-          <img src={products.find(product => product.id === selectedProductId)?.image?.src || ''} alt="Selected Product" style={{ maxWidth: '100%' }} />
-        </Box>
-      )}
     </Box>
   );
 }
