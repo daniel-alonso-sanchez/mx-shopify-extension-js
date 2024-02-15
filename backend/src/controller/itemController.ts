@@ -9,17 +9,14 @@ export class ItemController {
   constructor(private readonly appService: AppService) {}
 
   @Get('/')
-  async getItems(
-    @Headers('subscription-id') subscriptionId: string,
-  ): Promise<ProductsResponse> {
-    return this.appService.getItems(subscriptionId);
+  async getItems(): Promise<ProductsResponse> {
+    return this.appService.getItems();
   }
   @Get('/:id')
   async getItem(
-    @Param('id') id: string,
-    @Headers('subscription-id') subscriptionId: string,
+    @Param('id') id: string
   ): Promise<ProductResponse> {
     this.logger.debug(`This is the id: ${id}`);
-    return this.appService.getItem(subscriptionId, id);
+    return this.appService.getItem(id);
   }
 }

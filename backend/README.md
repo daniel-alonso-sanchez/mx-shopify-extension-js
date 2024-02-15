@@ -75,7 +75,14 @@ docker run -it --rm \
   wiremock/wiremock:3.3.1
 ```
 
+## env vars
 
+```
+SECRETS_URL=https://extensions-cloud-server/secrets
+PORT=8080
+SUBSCRIPTION_ID=zpxvow3ismzwpot7
+
+```
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).

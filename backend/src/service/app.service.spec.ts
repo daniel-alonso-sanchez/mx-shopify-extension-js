@@ -6,6 +6,7 @@ import { ProductsResponse } from '../client/shopify/model/productsResponse';
 import { ProductResponse } from '../client/shopify/model/productResponse';
 import path from 'path';
 import * as fs from 'fs-extra';
+import { ConfigService } from '@nestjs/config';
 
 function parseJsonFile(assetPath: string) {
   const rootPath = path.join(__dirname, '../../');
@@ -29,6 +30,14 @@ const mockShopifyClientService = {
   getItems: jest.fn(),
   getItem: jest.fn(),
 };
+const mockConfigService = {
+  get: jest.fn((key: string) => {
+    if (key === 'SUBSCRIPTION_ID') {
+      return 'someSubscriptionId';
+    }
+    return undefined;
+  }),
+};
 
 describe('AppService', () => {
   let appService: AppService;
@@ -45,6 +54,10 @@ describe('AppService', () => {
           provide: ShopifyClientService,
           useValue: mockShopifyClientService,
         },
+        {
+          provide: ConfigService,
+          useValue: mockConfigService,
+        },
       ],
     }).compile();
 
@@ -59,7 +72,7 @@ describe('AppService', () => {
       );
       mockShopifyClientService.getItems.mockResolvedValueOnce(productsResponse);
 
-      const result = await appService.getItems('someSubscriptionId');
+      const result = await appService.getItems();
 
       expect(mockSecretsClientService.findSecret).toHaveBeenCalledWith(
         'someSubscriptionId',
@@ -82,10 +95,7 @@ describe('AppService', () => {
       );
       mockShopifyClientService.getItem.mockResolvedValueOnce(productResponse);
 
-      const result = await appService.getItem(
-        'someSubscriptionId',
-        '4494451802165',
-      );
+      const result = await appService.getItem('4494451802165');
 
       expect(mockSecretsClientService.findSecret).toHaveBeenCalledWith(
         'someSubscriptionId',

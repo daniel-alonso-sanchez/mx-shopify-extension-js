@@ -3,6 +3,7 @@ import { SecretsClientService } from '../client/secrets/secrets-client.service';
 import { ShopifyClientService } from '../client/shopify/service/shopify-client.service';
 import { ProductsResponse } from '../client/shopify/model/productsResponse';
 import { ProductResponse } from '../client/shopify/model/productResponse';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AppService {
@@ -10,11 +11,13 @@ export class AppService {
   static readonly STORE_NAME: string = 'shopify.store.name';
   private readonly logger = new Logger(AppService.name);
   constructor(
+    private readonly configService: ConfigService,
     private readonly secretsClient: SecretsClientService,
     private readonly shopifyClient: ShopifyClientService,
   ) {}
 
-  async getItems(subscriptionId: string): Promise<ProductsResponse> {
+  async getItems(): Promise<ProductsResponse> {
+    const subscriptionId = this.configService.get<string>('SUBSCRIPTION_ID');
     const secret = await this.secretsClient.findSecret(
       subscriptionId,
       AppService.TOKEN_KEY,
@@ -26,10 +29,8 @@ export class AppService {
     this.logger.log(`store: ${storeName}`);
     return this.shopifyClient.getItems(storeName, secret);
   }
-  async getItem(
-    subscriptionId: string,
-    itemId: string,
-  ): Promise<ProductResponse> {
+  async getItem(itemId: string): Promise<ProductResponse> {
+    const subscriptionId = this.configService.get<string>('SUBSCRIPTION_ID');
     const secret = await this.secretsClient.findSecret(
       subscriptionId,
       AppService.TOKEN_KEY,

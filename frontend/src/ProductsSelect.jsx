@@ -45,12 +45,7 @@ function ProductSelect() {
 
   const fetchData = async () => {
     try {
-      const subscriptionId = localStorage.getItem('subscription_id');
-      const response = await fetch('/api/items', {
-        headers: {
-          'subscription-id': subscriptionId,
-        },
-      });
+      const response = await fetch('/api/items');
 
       if (!response.ok) {
         throw new Error('Error fetching data');
