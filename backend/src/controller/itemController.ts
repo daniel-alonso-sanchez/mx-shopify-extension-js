@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Logger, Headers } from '@nestjs/common';
+import { Controller, Get, Logger, Param } from '@nestjs/common';
 import { AppService } from '../service/app.service';
 import { ProductResponse } from '../client/shopify/model/productResponse';
 import { ProductsResponse } from '../client/shopify/model/productsResponse';
@@ -13,9 +13,7 @@ export class ItemController {
     return this.appService.getItems();
   }
   @Get('/:id')
-  async getItem(
-    @Param('id') id: string
-  ): Promise<ProductResponse> {
+  async getItem(@Param('id') id: string): Promise<ProductResponse> {
     this.logger.debug(`This is the id: ${id}`);
     return this.appService.getItem(id);
   }
