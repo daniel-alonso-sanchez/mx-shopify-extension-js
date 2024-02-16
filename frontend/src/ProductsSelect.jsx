@@ -4,7 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
-
+const ACTION_SET_VALUE = "changeValue";
 
 function ProductSelect() {
   const [products, setProducts] = useState([]);
@@ -35,10 +35,9 @@ function ProductSelect() {
 
     console.log(`product id: ${selectedProductId}`);
     parent.window.postMessage({
-      action: 'changeFormFieldValue',
+      action: ACTION_SET_VALUE,
       correlationId: correlationId,
-      value: selectedProductId.toString(),
-      fieldName: 'productId'
+      value: selectedProductId.toString()
     }, '*');
   }
 
