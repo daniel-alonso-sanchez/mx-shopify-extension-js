@@ -1,5 +1,5 @@
 build:
-  type: docker
+  type: with-docker
   properties:
     container-name: extensions/shopify-multi-js
     container-tag: latest
