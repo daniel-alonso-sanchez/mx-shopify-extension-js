@@ -26,7 +26,7 @@ function ProductSelect() {
 
   function onInit(data){
     console.log (`CorrelationId: ${data.correlationId}`)
-    const productIdToSelect = parseInt(data?.state?.currentNode?.properties?.productId, 10);
+    const productIdToSelect = parseInt(data?.state?.value, 10);
 
     setCorrelationId(data.correlationId);
     setProductIdFromEvent(productIdToSelect);
