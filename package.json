@@ -9,7 +9,7 @@
     "start:frontend": "cd frontend && npm start",
     "build:backend": "cd backend && npm install -g @nestjs/cli && npm install && nest build",
     "build:frontend": "cd frontend && npm install && npm run build",
-    "copy:frontend": "cp -r frontend/dist backend/public",
+    "copy:frontend": "cp -r frontend/dist/* backend/src/public",
     "package": "npm run build:frontend && npm run copy:frontend && npm run build:backend"
   },
   "devDependencies": {
